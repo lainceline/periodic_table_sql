@@ -5,20 +5,8 @@ PSQL="psql --username=freecodecamp --dbname=periodic_table -t --no-align -c"
 
 # Function to get element information
 get_element_info() {
-  local query="
-    SELECT
-      e.atomic_number,
-      e.name,
-      e.symbol,
-      p.type,
-      p.atomic_mass,
-      p.melting_point_celsius,
-      p.boiling_point_celsius
-    FROM elements e
-    JOIN properties p ON e.atomic_number = p.atomic_number
-    WHERE e.atomic_number = '$1' OR e.symbol = '$1' OR e.name = '$1';
-  "
-  echo $query | $PSQL
+  local query="SELECT e.atomic_number, e.name, e.symbol, t.type, p.atomic_mass, p.melting_point_celsius, p.boiling_point_celsius FROM elements e JOIN properties p ON e.atomic_number = p.atomic_number JOIN types t ON p.type_id = t.type_id WHERE e.atomic_number = '$1' OR e.symbol = '$1' OR e.name = '$1';"
+  echo $($PSQL "$query")
 }
 
 # Check if argument is provided
