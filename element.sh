@@ -1,10 +1,7 @@
 #!/bin/bash
 
-# Database connection details
-DB_NAME="periodic_table"
-DB_USER="your_db_user"
-DB_HOST="your_db_host"
-DB_PORT="your_db_port"
+# Database connection command
+PSQL="psql --username=freecodecamp --dbname=periodic_table -t --no-align -c"
 
 # Function to get element information
 get_element_info() {
@@ -21,7 +18,7 @@ get_element_info() {
     JOIN properties p ON e.atomic_number = p.atomic_number
     WHERE e.atomic_number = '$1' OR e.symbol = '$1' OR e.name = '$1';
   "
-  psql -U $DB_USER -d $DB_NAME -h $DB_HOST -p $DB_PORT -t -c "$query"
+  echo $query | $PSQL
 }
 
 # Check if argument is provided
